@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Object Bounce Sample</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        #sample1 {
+            width: 100px;
+            height: 100px;
+            background-color: blueviolet;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            border-radius: 100px;
+        }
+        #sample2 {
+            width: 100px;
+            height: 100px;
+            background-color: darkred;
+            position: fixed;
+            top: 150px;
+            left: 50%;
+            border-radius: 100px;
+        }
+        #sample3 {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            position: fixed;
+            top: 300px;
+            left: 50%;
+            border-radius: 100px;
+        }
+        #container {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="sample1"></div>
+    <div id="sample2"></div>
+    <div id="sample3"></div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(function () {
+        $(window).on("load", function() {
+            // バウンス呼び出し
+            bounce('#container', '#sample1')
+            bounce('#container', '#sample2')
+            bounce('#container', '#sample3')
+        })
+
+        function bounce(container, object) {
+
+            /**
+             * 速度をランダムにするための配列
+             *  必要に応じて正負の値を追加してください。
+             *  複数の数字を入れることでよりランダムな動きになります。
+             * @type {number[]}
+             */
+            const randomSpeed = [-1.5, -1, -0.5, 0.5 , 1, 1.5]
+
+            // 移動速度
+            let speedX = randomSpeed[Math.floor(Math.random() * randomSpeed.length)]
+            let speedY = randomSpeed[Math.floor(Math.random() * randomSpeed.length)]
+
+            // jQueryで要素取得
+            container = $(container)
+            object = $(object)
+
+            // インターバルで描画
+            setInterval(function () {
+                // コンテナサイズ取得
+                let windowSize = {
+                    height: container.height(),
+                    width: container.width()
+                }
+
+                // オブジェクトのサイズを取得
+                let objectSize = {
+                    height: object.height(),
+                    width: object.width()
+                }
+
+                // 位置情報
+                let location = {
+                    x: object.offset().left += speedX,
+                    y: object.offset().top += speedY
+                }
+
+                // CSSで位置を制御
+                object.css('left', location['x'] + 'px')
+                object.css('top', location['y'] + 'px')
+
+                // 壁判定_X軸
+                if (location['x'] < 0 || location['x'] > windowSize['width'] - objectSize['width']) {
+                    // リサイズされて範囲外に行った場合範囲内に戻す処理
+                    if (location['x'] > windowSize['width'] - objectSize['width']) {
+                        object.css('left', windowSize['width'] - objectSize['width'] + 'px')
+                    }
+                    // 壁判定によりspeedXを反転させる
+                    speedX *= -1
+                }
+
+                // 壁判定_Y軸
+                if (location['y'] < 0 || location['y'] > windowSize['height'] - objectSize['height']) {
+                    // リサイズされて範囲外に行った場合範囲内に戻す処理
+                    if (location['y'] > windowSize['height'] - objectSize['height']) {
+                        object.css('top', windowSize['height'] - objectSize['height'] + 'px')
+                    }
+                    // 壁判定によりspeedYを反転させる
+                    speedY *= -1
+                }
+            }, 1)
+        }
+    })
+</script>
+</body>
+</html>
