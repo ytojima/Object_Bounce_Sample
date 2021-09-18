@@ -83,7 +83,7 @@
             // インターバルで描画
             setInterval(function () {
                 // コンテナサイズ取得
-                let windowSize = {
+                let containerSize = {
                     height: container.height(),
                     width: container.width()
                 }
@@ -105,20 +105,20 @@
                 object.css('top', location['y'] + 'px')
 
                 // 壁判定_X軸
-                if (location['x'] < 0 || location['x'] > windowSize['width'] - objectSize['width']) {
+                if (location['x'] < 0 || location['x'] > containerSize['width'] - objectSize['width']) {
                     // リサイズされて範囲外に行った場合範囲内に戻す処理
-                    if (location['x'] > windowSize['width'] - objectSize['width']) {
-                        object.css('left', windowSize['width'] - objectSize['width'] + 'px')
+                    if (location['x'] > containerSize['width'] - objectSize['width']) {
+                        object.css('left', containerSize['width'] - objectSize['width'] + 'px')
                     }
                     // 壁判定によりspeedXを反転させる
                     speedX *= -1
                 }
 
                 // 壁判定_Y軸
-                if (location['y'] < 0 || location['y'] > windowSize['height'] - objectSize['height']) {
+                if (location['y'] < 0 || location['y'] > containerSize['height'] - objectSize['height']) {
                     // リサイズされて範囲外に行った場合範囲内に戻す処理
-                    if (location['y'] > windowSize['height'] - objectSize['height']) {
-                        object.css('top', windowSize['height'] - objectSize['height'] + 'px')
+                    if (location['y'] > containerSize['height'] - objectSize['height']) {
+                        object.css('top', containerSize['height'] - objectSize['height'] + 'px')
                     }
                     // 壁判定によりspeedYを反転させる
                     speedY *= -1
